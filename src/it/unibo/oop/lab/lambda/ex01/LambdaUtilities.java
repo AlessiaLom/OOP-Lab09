@@ -1,7 +1,9 @@
 package it.unibo.oop.lab.lambda.ex01;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -61,7 +63,11 @@ public final class LambdaUtilities {
         /*
          * Suggestion: consider Optional.filter
          */
-        return null;
+        final List<Optional<T>> list2 = new ArrayList<>();
+        for (final T elem : list) {
+            list2.add(Optional.ofNullable(elem).filter(pre));
+        }
+        return list2;
     }
 
     /**
@@ -79,8 +85,15 @@ public final class LambdaUtilities {
     public static <R, T> Map<R, Set<T>> group(final List<T> list, final Function<T, R> op) {
         /*
          * Suggestion: consider Map.merge
-         */
-        return null;
+        */
+        final Map<R, Set<T>> map = new HashMap<>();
+        for (final T elem : list) {
+            map.merge(op.apply(elem), new HashSet<>(Arrays.asList(elem)), (elem1, elem2) -> {
+                elem1.addAll(elem2);
+                return elem1;
+            });
+        }
+        return map;
     }
 
     /**
@@ -101,7 +114,9 @@ public final class LambdaUtilities {
          * 
          * Keep in mind that a map can be iterated through its forEach method
          */
-        return null;
+        final Map<K, V> map2 = new HashMap<>();
+        map.forEach((k, v) -> map2.put(k, v.orElse(def.get())));
+        return map2;
     }
 
     /**
